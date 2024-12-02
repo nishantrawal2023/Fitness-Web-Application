@@ -20,7 +20,8 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
         exercisesData = await fetchData(`https://exercisedb.p.rapidapi.com/exercises/bodyPart/${bodyPart}`, exerciseOptions);
       }
 
-      setExercises(exercisesData);
+      // Ensure the data is an array
+      setExercises(Array.isArray(exercisesData) ? exercisesData : []);
     };
 
     fetchExercisesData();
@@ -29,7 +30,7 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
   // Pagination
   const indexOfLastExercise = currentPage * exercisesPerPage;
   const indexOfFirstExercise = indexOfLastExercise - exercisesPerPage;
-  const currentExercises = exercises.slice(indexOfFirstExercise, indexOfLastExercise);
+  const currentExercises = Array.isArray(exercises) ? exercises.slice(indexOfFirstExercise, indexOfLastExercise) : [];
 
   const paginate = (event, value) => {
     setCurrentPage(value);
@@ -39,7 +40,7 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
   if (!currentExercises.length) return <Loader />;
 
   return (
-    <Box id="exercises" sx={{ mt: { lg: '109px' }, p: '20px' }}> {/* Removed the duplicate 'mt' */}
+    <Box id="exercises" sx={{ mt: { lg: '109px' }, p: '20px' }}>
       <Typography variant="h4" fontWeight="bold" sx={{ fontSize: { lg: '44px', xs: '30px' } }} mb="46px">
         Showing Results
       </Typography>
